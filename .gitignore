@@ -1,1 +1,3 @@
-Ignore files
+#Ignore files
+cgpa.o
+grade
