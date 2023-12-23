@@ -98,20 +98,20 @@ int main(){
            
   GameState user_input; // is to store the user input.
   std::cout<<"Your choice: ";
-  std::cin>>user_input; // uses the >> operator to extract the user input into user_input;
+  std::cin>>user_input; // uses the custom >> operator to extract the user input into user_input;
   
-  /* uses the << operator to insert user_input and compGuestState to the stream */
+  /* uses the custom << operator to insert user_input and compGuestState to the stream */
   std::cout<<"Your choice is: "<< user_input
            <<"\nComputer choice is: "<< compGuestState
            <<std::endl;
   
   
-  std::vector<GameState> vec = {compGuestState, user_input}; // vector to store both random Gamestate and user choice GameState
+  std::vector<GameState> vec = {compGuestState, user_input}; // vector to store both random Gamestate generated and user choice GameState
   
   /* range is an instance of GamePair Struct that contain the iterator to it member. The 'vec.end()-1',is to make sure iterator is NOT pointing to address after the last element in the vector*/
   GamePair<std::vector<GameState>::iterator> range{vec.begin(), vec.end()-1};
   
-  /* Sorting it from smaller GameState value to bigger state. The range.end()+1 is to compensate the -1 from the vector. This is done to make sure sort algorithm iterator range.end()+1 is pointing to the address after the last element in the vector 'vec'*/ 
+  /* Sorting it from smaller GameState value to bigger state. The range.end()+1 is to compensate the 'vec.end()-1' from the vector. This is done to make sure sort algorithm iterator range.end()+1 is pointing to the address after the last element in the vector 'vec'*/ 
   std::sort(range.begin(), range.end()+1);
  
   const auto [arg1, arg2, winner] = get_winner(*range.first, *range.second); // calls get_winner() and store the return tuple values in arg1,arg2 and winner
