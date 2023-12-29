@@ -62,7 +62,7 @@
     auto result = v;
     if(val1 == arg1 && val2 == arg2){
       result = v;
-      return v;
+      return result;
     }
   }
    return std::make_tuple(arg1, arg2, Unknown);
