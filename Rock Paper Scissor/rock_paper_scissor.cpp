@@ -33,6 +33,7 @@
    case Rock: gameState = GameState(user_input); break;
    case Paper: gameState = GameState(user_input); break;
    case Scissor: gameState = GameState(user_input); break;
+   case Unknown: gameState = GameState(user_input); break;
    default: std::cout<<"user input is not a valid state.";
   };
   
