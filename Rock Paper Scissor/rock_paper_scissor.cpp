@@ -6,7 +6,7 @@
 #include <ctime>   // time
 #include <iomanip> // std::setw(), std::setfill() 
 #include <algorithm> //std::sort
-#include <tuple> //std::tuple, std::make_tuple, std::ignore, std::tie
+#include <tuple> //std::tuple, std::make_tuple
 
  /* GameState enum */
  enum GameState {Rock = 1, Paper, Scissor, Unknown};
