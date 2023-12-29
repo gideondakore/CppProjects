@@ -5,7 +5,7 @@
 #include <cstdlib> //rand and srand
 #include <ctime>   // time
 #include <iomanip> // std::setw(), std::setfill() 
-#include <algorithm> // std::next_permutation, std::sort
+#include <algorithm> //std::sort
 #include <tuple> //std::tuple, std::make_tuple, std::ignore, std::tie
 
  /* GameState enum */
