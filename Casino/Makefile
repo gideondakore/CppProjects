@@ -6,10 +6,10 @@ HFILE := Casino.hpp
 EXE := casino
 
 $(EXE): $(BIN)
-	$(CXX) -o $(EXE) $(BIN)
+	@$(CXX) -o $(EXE) $(BIN)
 
 $(BIN): $(SRC) $(HFILE)
-	$(CXX) $(CXXFLAGS) $(SRC)
+	@$(CXX) $(CXXFLAGS) $(SRC)
 
 clean:
 	rm -f $(EXE) $(BIN)
