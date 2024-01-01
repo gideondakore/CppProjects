@@ -2,6 +2,9 @@
 #define _CASINO_H_
 #include <string>
 #include <iostream>
+#include <sstream>
+#include <iomanip>
+#include <cmath>
 
 class Casino {
   private:
@@ -10,7 +13,7 @@ class Casino {
      int level{};
      double bid{};
      int luckyNumber{};
-     double tempBid;
+     
      
   public:
      Casino() = default;
@@ -39,6 +42,9 @@ class Casino {
      
      void setLuckyNumber(int);
      int getLuckyNumber()const;
+     
+     //int fixedPointArithmetic(double);
+     int checkDecimals(double);
      
 };
 

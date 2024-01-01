@@ -4,7 +4,7 @@
 #include <ctime> //std::time
 #include <cstdlib> //std::srand
 #include <limits> //numeric_limits, streamsize
-#include <iomanip> //std::setw(), std::setfill(), std::left
+#include <iomanip> //std::setw(), std::setfill(), std::left, std::setprecision, std::fixed
 #include <cctype> //std::tolower()
 #include <sstream> //std::istringstream
 
@@ -14,7 +14,17 @@ Casino::Casino(std::string name, double amount)
 :name{name}, amount{amount}{}
 
 Casino& Casino::operator-(Casino& rhs){
-  this->amount -= rhs.bid;
+  
+  int decimalPointBid = Casino::checkDecimals(rhs.bid);
+  int decimalPointAmount = Casino::checkDecimals(this->amount);
+  
+  rhs.bid *= pow(10, decimalPointBid);
+  this->amount *= pow(10, decimalPointAmount);
+  double results = (this->amount - rhs.bid) / pow(10, 2);
+  rhs.bid /= pow(10,2);
+  
+  this->amount = results;
+  
   return rhs; 
 }
      
@@ -77,6 +87,19 @@ void Casino::setLuckyNumber(int luckyNumber){
 
 int Casino::getLuckyNumber()const{
   return this->luckyNumber;
+}
+
+int Casino::checkDecimals(double value){
+  std::ostringstream oss;
+  oss << std::setprecision(2) << std::fixed << value;
+  std::string valStr = oss.str();
+  size_t dotPos = valStr.find('.');
+  
+  if(dotPos != std::string::npos)
+    return valStr.size() - dotPos -1;
+  
+  return 0;
+  
 }
 
 Casino& operator*(Casino& lhs, double rhs){
@@ -196,7 +219,7 @@ GameState outCome(int user_guest, Casino& casino){
 char outcomeMsg(GameState outcome, Casino& casino){
   char response{};
   if(outcome == GameState::Win){
-     casino = casino * (casino.getLevel() * 2); //overloaded * operator
+     casino = casino * (casino.getLevel() * 2); //global overloaded * operator
      std::cout<<"Hooray!!!...You guest the lucky number which is "<<casino.getLuckyNumber()
               <<", You won "<<casino.getLevel()*2<<" time "<<"your current bidding value (i.e "<<(casino.getBid() * casino.getLevel() * 2)<<")\n\n";
      std::cout<<casino<<std::endl;
@@ -206,7 +229,8 @@ char outcomeMsg(GameState outcome, Casino& casino){
     
      return response;
   }else{
-     casino = casino - casino;
+     casino = casino - casino; //member overloaded - operator
+     
      std::cout<<"Sorry. You lose, the lucky number was "<<casino.getLuckyNumber()<<", $"
               <<casino.getBid()<<" has been deducted from "<<"your main balance\n\n";
      std::cout<<casino<<std::endl;
@@ -227,9 +251,7 @@ bool bidAmount(Casino& casino){
      
      if(std::cin>>bidAmount){
        clearStreamBuffer();
-       std::cout<<"TEST+++++++++++OUT "<<bidAmount<<" casino.getAmount+++++++++OUT"<<casino.getAmount()<<std::endl;
        if( (casino.getAmount() >= bidAmount) && (casino.getAmount() > 0.00) && (bidAmount > 0.00) ){
-         std::cout<<"TEST+++++++++++IN"<<bidAmount<<" casino.getAmount+++++++++IN"<<casino.getAmount()<<std::endl;
          casino.setBid(bidAmount);
          return true;
        }else{
