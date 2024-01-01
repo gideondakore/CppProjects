@@ -8,12 +8,16 @@ class Casino {
      std::string name{};
      double amount{};
      int level{};
-     //int random{};
+     double bid{};
+     int luckyNumber{};
+     double tempBid;
      
   public:
      Casino() = default;
      
      Casino(std::string, double);
+     
+     Casino& operator-(Casino& other);
      
      friend std::ostream& operator<<(std::ostream&, const Casino&);
      
@@ -27,7 +31,15 @@ class Casino {
      int getLevel()const;
      
      int randomNumberGen(int level = 1);
+     
      void calcBalance(double);
+     
+     void setBid(double);
+     double getBid()const;
+     
+     void setLuckyNumber(int);
+     int getLuckyNumber()const;
+     
 };
 
 #endif //_CASINO_H_
