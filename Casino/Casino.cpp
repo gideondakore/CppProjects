@@ -8,6 +8,7 @@
 #include <cctype> //std::tolower()
 #include <sstream> //std::istringstream
 
+enum class GameState{Win, Lose};
      
 Casino::Casino(std::string name, double amount)
 :name{name}, amount{amount}{}
@@ -83,13 +84,34 @@ Casino& operator*(Casino& lhs, double rhs){
   return lhs;
 }
 
-
+//WELCOME
+void welcomMsg(){
+       std::cout << "\n=========================================================================================================";
+        std::cout<< "\n W       W       W  EEEEEEEEE  LL           CCCCC   OOOOOOOO       M       M      EEEEEEEEE       ";
+        std::cout<< "\n  W     W W     W   EE         LL         CC       OO      OO     M M     M M     EE              ";
+        std::cout<< "\n   W   W   W   W    EEEEEEE    LL        CC        OO      OO    M   M   M   M    EEEEEEE         ";
+        std::cout<< "\n    W W     W W     EE         LL         CC       OO      OO   M     M M     M   EE              "; 
+        std::cout<< "\n     W       W      EEEEEEEEE  LLLLLLLL     CCCCC   OOOOOOOO   M       M       M  EEEEEEEEE       ";
+        std::cout<<std::endl;
+        std::cout<< "\n\t\t\t\t\t TTTTTTTT   OOOOOOOO    ";
+        std::cout<< "\n\t\t\t\t\t    TT     OO      OO   ";
+        std::cout<< "\n\t\t\t\t\t    TT     OO      OO   ";
+        std::cout<< "\n\t\t\t\t\t    TT     OO      OO   ";
+        std::cout<< "\n\t\t\t\t\t    TT      OOOOOOOO    ";
+        std::cout<<std::endl;
+	std::cout << "\n\t\t   CCCCC      A        SSSSSSSSS   IIIIIIIII  NN     NN    OOOOOOOO     ";
+	std::cout << "\n\t\t CC          A  A      SS             III     NN N   NN   OO      OO    ";
+	std::cout << "\n\t\tCC          A    A     SSSSSSSSS      III     NN  N  NN   OO      OO    ";
+	std::cout << "\n\t\t CC        AAAAAAAA           SS      III     NN   N NN   OO      OO    ";
+	std::cout << "\n\t\t   CCCCC  A        A   SSSSSSSSS   IIIIIIIII  NN     NN    OOOOOOOO     ";
+	std::cout << "\n=========================================================================================================\n\n";
+}
 void printRule(){
   std::cout<<std::setfill('*')<<std::setw(50)
-           <<" These "
-           <<"are the rules of the "
-           <<std::setfill('*')<<std::setw(50)<<std::left
-           <<"game "
+           <<" THESR "
+           <<"ARE THE RULES OF THE "
+           <<std::setfill('*')<<std::setw(34)<<std::left
+           <<"GAME "
            <<std::endl;
 }
 
@@ -162,18 +184,18 @@ int validateUserGuestNumber(Casino& casino){
    return validator;
 }
 
-std::string outCome(int user_guest, Casino& casino){
+GameState outCome(int user_guest, Casino& casino){
   casino.setLuckyNumber(casino.randomNumberGen(casino.getLevel()));
   if(user_guest == casino.getLuckyNumber()){
-    return std::string("win");
+    return GameState::Win;
   }
   
-  return std::string("lose");
+  return GameState::Lose;
 }
 
-char outcomeMsg(std::string outcome, Casino& casino){
+char outcomeMsg(GameState outcome, Casino& casino){
   char response{};
-  if(outcome == "win"){
+  if(outcome == GameState::Win){
      casino = casino * (casino.getLevel() * 2); //overloaded * operator
      std::cout<<"Hooray!!!...You guest the lucky number which is "<<casino.getLuckyNumber()
               <<", You won "<<casino.getLevel()*2<<" time "<<"your current bidding value (i.e "<<(casino.getBid() * casino.getLevel() * 2)<<")\n\n";
@@ -205,20 +227,26 @@ bool bidAmount(Casino& casino){
      
      if(std::cin>>bidAmount){
        clearStreamBuffer();
-       if(bidAmount <= casino.getAmount() && casino.getAmount() > 0){
+       std::cout<<"TEST+++++++++++OUT "<<bidAmount<<" casino.getAmount+++++++++OUT"<<casino.getAmount()<<std::endl;
+       if( (casino.getAmount() >= bidAmount) && (casino.getAmount() > 0.00) && (bidAmount > 0.00) ){
+         std::cout<<"TEST+++++++++++IN"<<bidAmount<<" casino.getAmount+++++++++IN"<<casino.getAmount()<<std::endl;
          casino.setBid(bidAmount);
          return true;
        }else{
          std::cout<<std::setprecision(2)<<std::fixed;
          double getVal = (casino.getAmount() != 0 ? casino.getAmount() : 0);
-         std::cout<<"\nInsufficient amount, Bidding amount must be greater than $0.00 and at most "
-                  <<"$"
-                  <<getVal
-                  <<(getVal != 0 ? " " : " is not a valid amount")
-                  <<". Wallet info:\n\n"
-                  <<casino
-                  <<"\n\nEnter a sufficient amount to continue.\n"
-                  <<"Do you want to continue playing? (y/n): ";
+         if(getVal != 0){
+             std::cout<<"\nInsufficient amount, Bidding amount must be greater than $0.00 and at most $"
+                      <<getVal;
+         }else{
+            std::cout<<"\nInsufficient amount. $"
+                     <<getVal
+                     <<" is not a valid bid amount";
+        }
+            std::cout<<". Wallet info:\n\n"
+                     <<casino
+                     <<"\n\nEnter a sufficient amount to continue.\n"
+                     <<"Do you want to continue playing? (y/n): ";
                   
         response = yesOrNo();           
        }
@@ -244,8 +272,8 @@ int main(){
   char response{};
   double deposit{};
   
-  std::cout<<"Welcome to the world of Casino, player ;)"<<std::endl;
-  
+  //std::cout<<"Welcome to the world of Casino, player ;)"<<std::endl;
+  welcomMsg();
   printRule();
   
   
@@ -293,7 +321,7 @@ int main(){
   
   
   int user_guest = validateUserGuestNumber(game);
-  std::string outcome = outCome(user_guest, game);
+  GameState outcome = outCome(user_guest, game);
   
   
   response = outcomeMsg(outcome, game);
@@ -306,7 +334,7 @@ int main(){
      if(validatedAmount){
        printRandNumberMsg(game);
        user_guest = validateUserGuestNumber(game);
-       std::string outcome = outCome(user_guest, game);
+       GameState outcome = outCome(user_guest, game);
        response = outcomeMsg(outcome, game);
      }else{
        quitCasino();
