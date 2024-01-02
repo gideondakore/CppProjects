@@ -13,8 +13,7 @@ class Casino {
      int level{};
      double bid{};
      int luckyNumber{};
-     
-     
+       
   public:
      Casino() = default;
      
@@ -43,9 +42,7 @@ class Casino {
      void setLuckyNumber(int);
      int getLuckyNumber()const;
      
-     
-     int checkDecimals(double);
-     
+     int checkDecimals(double);    
 };
 
 #endif //_CASINO_H_

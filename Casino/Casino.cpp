@@ -1,6 +1,6 @@
-#include "Casino.hpp"
+#include "Casino.hpp" //Casino
 #include <iostream>
-#include <string> //std::string, std::getline
+#include <string> //std::string, std::getline, substr(), find_first_not_of, find_last_not_of
 #include <ctime> //std::time
 #include <cstdlib> //std::srand
 #include <limits> //numeric_limits, streamsize
@@ -108,7 +108,7 @@ Casino& operator*(Casino& lhs, double rhs){
   return lhs;
 }
 
-//WELCOME
+
 void welcomMsg(){
        std::cout << "\n=========================================================================================================";
         std::cout<< "\n W       W       W  EEEEEEEEE  LL           CCCCC   OOOOOOOO       M       M      EEEEEEEEE       ";
@@ -188,7 +188,6 @@ int levelSelector(){
   return level;
   
 }
-
 
 int validateUserGuestNumber(Casino& casino){
    int user_input{};
@@ -319,8 +318,6 @@ int main(){
   
   getUserName(game);
   
-  
-  
   bool continueLoop{false};
   do{
     std::cout<<"Enter amount to deposit to start: $";
@@ -353,19 +350,12 @@ int main(){
     return 0;
   }
   
-  
-  
-  
   printRandNumberMsg(game);
-  
   
   int user_guest = validateUserGuestNumber(game);
   std::cout<<std::endl;
   GameState outcome = outCome(user_guest, game);
-  
-  
   response = outcomeMsg(outcome, game);
-  
   
   if(response == 'y'){
    bool validatedAmount{};
