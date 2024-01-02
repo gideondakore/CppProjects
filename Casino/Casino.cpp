@@ -141,7 +141,7 @@ void printRule(){
 
 void printRandNumberMsg(Casino casino){
   
-  std::cout<<"Predict the random number between 1-"<<casino.getLevel() * 10<<": ";
+  std::cout<<"Predict the random number between 1-"<< (casino.getLevel() * 10) <<": ";
 }
 
 void clearStreamBuffer(){
@@ -198,7 +198,7 @@ int validateUserGuestNumber(Casino& casino){
        clearStreamBuffer();
        validator = user_input;
      }else{
-      std::cout<<"Invalid input. Your guest must be a number and it should be greater than 0 but less than or equal to "<<casino.getLevel()*10<<std::endl;
+      std::cout<<"Invalid input. Your guest must be a number and it should be greater than 0 but less than or equal to "<<(casino.getLevel()*10)<<std::endl;
       
       clearStreamBuffer();
       continueLoop = true;
@@ -222,7 +222,7 @@ char outcomeMsg(GameState outcome, Casino& casino){
   if(outcome == GameState::Win){
      casino = casino * (casino.getLevel() * 2); //global overloaded * operator
      std::cout<<"Hooray!!!...You guest the lucky number which is "<<casino.getLuckyNumber()
-              <<", You won "<<casino.getLevel()*2<<" time "<<"your current bidding value (i.e "<<(casino.getBid() * casino.getLevel() * 2)<<")\n\n";
+              <<", You won "<<(casino.getLevel()*2)<<" time "<<"your current bidding value (i.e "<<(casino.getBid() * casino.getLevel() * 2)<<")\n\n";
      std::cout<<casino<<std::endl;
      std::cout<<"\nDo you want to continue playing? (y/n): ";
      
