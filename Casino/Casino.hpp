@@ -43,7 +43,7 @@ class Casino {
      void setLuckyNumber(int);
      int getLuckyNumber()const;
      
-     //int fixedPointArithmetic(double);
+     
      int checkDecimals(double);
      
 };
