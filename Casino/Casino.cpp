@@ -5,8 +5,9 @@
 #include <cstdlib> //std::srand
 #include <limits> //numeric_limits, streamsize
 #include <iomanip> //std::setw(), std::setfill(), std::left, std::setprecision, std::fixed
-#include <cctype> //std::tolower()
+#include <cctype> //std::tolower(), std::toupper()
 #include <sstream> //std::istringstream
+#include <cstddef> //size_t
 
 enum class GameState{Win, Lose};
      
@@ -139,7 +140,8 @@ void printRule(){
 }
 
 void printRandNumberMsg(Casino casino){
-  std::cout<<"Predict the random number between 1-"<<casino.getLevel() * 10<<std::endl;
+  
+  std::cout<<"Predict the random number between 1-"<<casino.getLevel() * 10<<": ";
 }
 
 void clearStreamBuffer(){
@@ -265,10 +267,11 @@ bool bidAmount(Casino& casino){
                      <<getVal
                      <<" is not a valid bid amount";
         }
-            std::cout<<". Wallet info:\n\n"
-                     <<casino
-                     <<"\n\nEnter a sufficient amount to continue.\n"
-                     <<"Do you want to continue playing? (y/n): ";
+        
+        std::cout<<". Wallet info:\n\n"
+                 <<casino
+                 <<"\n\nEnter a sufficient amount to continue.\n"
+                 <<"Do you want to continue playing? (y/n): ";
                   
         response = yesOrNo();           
        }
@@ -286,23 +289,37 @@ void quitCasino(){
   std::cout<<"Casino game quitted successfully..."<<std::endl;
 }
 
-
+void getUserName(Casino& casino){
+   std::string name{};
+   bool continueLoop{false};
+  do{
+    std::cout<<"\nEnter your name: ";
+    std::getline(std::cin, name);
+    size_t firstNotOf = name.find_first_not_of(" \t\n\r");
+    size_t lastNotOf = name.find_last_not_of(" \t\n\r");
+    if(firstNotOf != std::string::npos && lastNotOf != std::string::npos){
+    name = name.substr(firstNotOf, lastNotOf - firstNotOf + 1);
+    name.at(0) = std::toupper(name.at(0));
+    casino.setName(name);
+    continueLoop = false;
+    }else{
+      std::cout<<"Please name is required"<<std::endl;
+      continueLoop = true;
+    }
+  }while(continueLoop);
+}
 
 int main(){
   Casino game;
-  std::string name{};
+  
   char response{};
   double deposit{};
-  
-  //std::cout<<"Welcome to the world of Casino, player ;)"<<std::endl;
   welcomMsg();
   printRule();
   
+  getUserName(game);
   
-  std::cout<<"\nEnter your name: ";
-  std::getline(std::cin, name);
-  std::cout<<std::endl;
-  game.setName(name);
+  
   
   bool continueLoop{false};
   do{
@@ -343,6 +360,7 @@ int main(){
   
   
   int user_guest = validateUserGuestNumber(game);
+  std::cout<<std::endl;
   GameState outcome = outCome(user_guest, game);
   
   
@@ -356,6 +374,7 @@ int main(){
      if(validatedAmount){
        printRandNumberMsg(game);
        user_guest = validateUserGuestNumber(game);
+       std::cout<<std::endl;
        GameState outcome = outCome(user_guest, game);
        response = outcomeMsg(outcome, game);
      }else{
